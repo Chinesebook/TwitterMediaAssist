@@ -399,7 +399,7 @@ function getFilename(url) {
 }
 
 function getTweetOwner(readableFilename) {
-    const re = /(.+)-[0-9]+/g
+    const re = /(.+)-[0-9]+(-[0-9]?)/g
     const tweetOwner = re.exec(readableFilename)[1]
     return tweetOwner
 }
