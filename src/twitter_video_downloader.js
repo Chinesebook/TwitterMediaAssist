@@ -363,6 +363,8 @@ function mergeFragment(buffer, fragment) {
 }
 
 function downloadTsVideo(data, tsFilename, readableName) {
+    const tweetOwner = getTweetOwner(readableFilename)
+
     browser.storage.sync.get({
         spcificPathName: false,
         readableName: false
@@ -375,7 +377,7 @@ function downloadTsVideo(data, tsFilename, readableName) {
         let options = {
             url: url,
             saveAs: items.spcificPathName,
-            filename: tsFilename + ".ts"
+            filename: `twitter/${tweetOwner}/${tsFilename}.ts`
         }
 
         if (items.readableName) {
@@ -391,14 +393,28 @@ function fileExtension(url) {
     return splited[splited.length - 1].split('?')[0]
 }
 
+function getFilename(url) {
+    const splited = url.split('/')
+    return splited[splited.length - 1].split('?')[0]
+}
+
+function getTweetOwner(readableFilename) {
+    const re = /(.+)-[0-9]+/g
+    const tweetOwner = re.exec(readableFilename)[1]
+    return tweetOwner
+}
+
 function downloadMp4Video({ url, readableFilename }) {
+    const tweetOwner = getTweetOwner(readableFilename)
+
     browser.storage.sync.get({
         spcificPathName: false,
         readableName: false
     }).then((items) => {
         let options = {
             url: url,
-            saveAs: items.spcificPathName
+            saveAs: items.spcificPathName,
+            filename: `twitter/${tweetOwner}/${getFilename(url)}`
         }
 
         if (items.readableName) {
@@ -410,6 +426,8 @@ function downloadMp4Video({ url, readableFilename }) {
 }
 
 function downloadImage({ url, readableFilename }) {
+    const tweetOwner = getTweetOwner(readableFilename)
+
     browser.storage.sync.get({
         spcificPathName: false,
         readableName: false
@@ -444,7 +462,7 @@ function downloadImage({ url, readableFilename }) {
         }
 
         if (filenameMatches.length) {
-            options.filename = `${filename}${format}`
+            options.filename = `twitter/${tweetOwner}/${filename}${format}`
         }
 
         browser.downloads.download(options)

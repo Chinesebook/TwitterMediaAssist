@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "Twitter Media Assist",
+  "name": "Twitter Media Assist Custom",
   "description": "For your better Twitter media experience.",
-  "version": "3.2.7",
+  "version": "3.2.8",
 
   "permissions": [
     "*://x.com/*",
