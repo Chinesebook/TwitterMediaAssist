@@ -440,7 +440,8 @@ function downloadImage({ url, readableFilename }) {
 
         let options = {
             url: url,
-            saveAs: items.spcificPathName
+            saveAs: items.spcificPathName,
+            filename: `twitter/${tweetOwner}/${getFilename(url)}`
         }
 
         let filename = 'no_title'
