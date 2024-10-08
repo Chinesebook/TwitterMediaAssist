@@ -363,7 +363,7 @@ function mergeFragment(buffer, fragment) {
 }
 
 function downloadTsVideo(data, tsFilename, readableName) {
-    const tweetOwner = getTweetOwner(readableFilename)
+    const [tweetOwner, tweetId] = getTweetInfo(readableFilename)
 
     browser.storage.sync.get({
         spcificPathName: false,
@@ -377,7 +377,7 @@ function downloadTsVideo(data, tsFilename, readableName) {
         let options = {
             url: url,
             saveAs: items.spcificPathName,
-            filename: `twitter/${tweetOwner}/${tsFilename}.ts`
+            filename: `twitter/${tweetOwner}/${tweetId}-${tsFilename}.ts`
         }
 
         if (items.readableName) {
@@ -398,14 +398,13 @@ function getFilename(url) {
     return splited[splited.length - 1].split('?')[0]
 }
 
-function getTweetOwner(readableFilename) {
-    const re = /(.+)-[0-9]+(-[0-9]?)/g
-    const tweetOwner = re.exec(readableFilename)[1]
-    return tweetOwner
+function getTweetInfo(readableFilename) {
+    const [tweetOwner, tweetId, _] = readableFilename.split('-')
+    return [tweetOwner, tweetId]
 }
 
 function downloadMp4Video({ url, readableFilename }) {
-    const tweetOwner = getTweetOwner(readableFilename)
+    const [tweetOwner, tweetId] = getTweetInfo(readableFilename)
 
     browser.storage.sync.get({
         spcificPathName: false,
@@ -414,7 +413,7 @@ function downloadMp4Video({ url, readableFilename }) {
         let options = {
             url: url,
             saveAs: items.spcificPathName,
-            filename: `twitter/${tweetOwner}/${getFilename(url)}`
+            filename: `twitter/${tweetOwner}/${tweetId}-${getFilename(url)}`
         }
 
         if (items.readableName) {
@@ -426,11 +425,11 @@ function downloadMp4Video({ url, readableFilename }) {
 }
 
 function downloadImage({ url, readableFilename }) {
-    console.log('downloadImage')
+    console.log('=== downloadImage ===')
     console.log('url', url)
     console.log('readableFilename', readableFilename)
 
-    const tweetOwner = getTweetOwner(readableFilename)
+    const [tweetOwner, tweetId] = getTweetInfo(readableFilename)
 
     browser.storage.sync.get({
         spcificPathName: false,
@@ -445,7 +444,7 @@ function downloadImage({ url, readableFilename }) {
         let options = {
             url: url,
             saveAs: items.spcificPathName,
-            filename: `twitter/${tweetOwner}/${getFilename(url)}`
+            filename: `twitter/${tweetOwner}/${tweetId}-${getFilename(url)}`
         }
 
         let filename = 'no_title'
@@ -467,10 +466,10 @@ function downloadImage({ url, readableFilename }) {
         }
 
         if (filenameMatches.length) {
-            filename = filename.split('.')[0]
-            console.log('if (filenameMatches.length)')
+            console.log('=== if (filenameMatches.length) ===')
             console.log('filename', filename)
-            options.filename = `twitter/${tweetOwner}/${filename}${format}`
+            filename = filename.split('.')[0]
+            options.filename = `twitter/${tweetOwner}/${tweetId}-${filename}${format}`
         }
 
         browser.downloads.download(options)
