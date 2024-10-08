@@ -426,6 +426,10 @@ function downloadMp4Video({ url, readableFilename }) {
 }
 
 function downloadImage({ url, readableFilename }) {
+    console.log('downloadImage')
+    console.log('url', url)
+    console.log('readableFilename', readableFilename)
+
     const tweetOwner = getTweetOwner(readableFilename)
 
     browser.storage.sync.get({
@@ -463,6 +467,9 @@ function downloadImage({ url, readableFilename }) {
         }
 
         if (filenameMatches.length) {
+            filename = filename.split('.')[0]
+            console.log('if (filenameMatches.length)')
+            console.log('filename', filename)
             options.filename = `twitter/${tweetOwner}/${filename}${format}`
         }
 
