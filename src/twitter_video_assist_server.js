@@ -64,6 +64,8 @@ function createWorker(filename, readableFilename) {
 }
 
 function processWorkerData(filename, readableFilename) {
+    const [tweetOwner, tweetId] = getTweetInfo(readableFilename)
+
     return (event) => {
         browser.storage.sync.get({
             spcificPathName: false,
@@ -85,7 +87,7 @@ function processWorkerData(filename, readableFilename) {
             browser.downloads.download({
                 url: url,
                 saveAs: items.spcificPathName,
-                filename: downloadFilename + ".gif"
+                filename: `twitter/${tweetOwner}/${tweetId}-${filename}.gif`
             })
             workerSpace[filename].terminate()
             delete workerSpace[filename]
